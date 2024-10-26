@@ -10,25 +10,11 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [.blue, .lightBlue]), // everything in SwiftUI is a view.
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing)
-                .edgesIgnoringSafeArea(.all)
+            BackgroundView(topColor: .blue, bottomColor: .lightBlue)
             VStack(spacing: 8) {
-                Text("Cupertino, CA")
-                    .font(.system(size: 32, weight: .medium, design: .default)) // Every modifier is also a view,
-                    .foregroundColor(.white)                                    // wrapping view on which it is applied.
-                    .padding()
-                VStack {
-                    Image(systemName: "cloud.sun.fill")
-                        .renderingMode(.original)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 180, height: 180)
-                    Text("76°")
-                        .font(.system(size: 70, weight: .medium))
-                        .foregroundColor(.white)
-                }
+                CityTextView(cityName: "Cupertino, CA")
+                MainWeatherStatusView(imageName: "cloud.sun.fill",
+                                      temperature: 76)
                 .padding(.bottom, 40)
                 HStack(spacing: 20) {
                     WeatherDayView(dayOfWeek: "TUE",
@@ -48,6 +34,12 @@ struct ContentView: View {
                                    temperature: 25)
                 }
                 Spacer() // Spacing fill the entire space.
+                Button {
+                    print("tapped")
+                } label: {
+                    WeatherButton(title: "Change Day Time", textColor: .blue, backgroundColor: .white)
+                }
+                Spacer()
             }
         }
     }
@@ -72,9 +64,52 @@ struct WeatherDayView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
-            Text("\(temperature)")
+            Text("\(temperature)°")
                 .font(.system(size: 28, weight: .medium))
                 .foregroundColor(.white)
         }
     }
 }
+
+struct BackgroundView: View {
+    var topColor: Color
+    var bottomColor: Color
+    
+    var body: some View {
+        LinearGradient(gradient: Gradient(colors: [topColor, bottomColor]), // everything in SwiftUI is a view.
+                       startPoint: .topLeading,
+                       endPoint: .bottomTrailing)
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct CityTextView: View {
+    var cityName: String
+    
+    var body: some View {
+        Text(cityName)
+            .font(.system(size: 32, weight: .medium, design: .default)) // Every modifier is also a view,
+            .foregroundColor(.white)                                    // wrapping view on which it is applied.
+            .padding()
+    }
+}
+
+struct MainWeatherStatusView: View {
+    var imageName: String
+    var temperature: Int
+    
+    var body: some View {
+        VStack {
+            Image(systemName: imageName)
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 180, height: 180)
+            Text("\(temperature)°")
+                .font(.system(size: 70, weight: .medium))
+                .foregroundColor(.white)
+        }
+    }
+}
+
+
