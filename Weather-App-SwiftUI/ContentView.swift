@@ -8,12 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    // In SwiftUI, we don't update the UI directly.
+    // We use some source of truth data to update the UI.
+    // Struct is created and destroyed all the time.
+    // But @State keeps the data intact.
+    @State private var isNight = false
+    
     var body: some View {
         ZStack {
-            BackgroundView(topColor: .blue, bottomColor: .lightBlue)
+            BackgroundView(isNight: $isNight) // @Binding variable
             VStack(spacing: 8) {
                 CityTextView(cityName: "Cupertino, CA")
-                MainWeatherStatusView(imageName: "cloud.sun.fill",
+                MainWeatherStatusView(imageName: isNight ? "moon.stars.fill":  "cloud.sun.fill",
                                       temperature: 76)
                 .padding(.bottom, 40)
                 HStack(spacing: 20) {
@@ -35,7 +41,7 @@ struct ContentView: View {
                 }
                 Spacer() // Spacing fill the entire space.
                 Button {
-                    print("tapped")
+                    isNight.toggle()
                 } label: {
                     WeatherButton(title: "Change Day Time", textColor: .blue, backgroundColor: .white)
                 }
@@ -72,11 +78,13 @@ struct WeatherDayView: View {
 }
 
 struct BackgroundView: View {
-    var topColor: Color
-    var bottomColor: Color
+    // @Binding always binds to a @State variable.
+    // Means that its value will always be same as the @State variable.
+    @Binding var isNight: Bool
     
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [topColor, bottomColor]), // everything in SwiftUI is a view.
+        LinearGradient(gradient: Gradient(colors: [isNight ? .black: .blue,
+                                        isNight ? .gray: .lightBlue]), // everything in SwiftUI is a view.
                        startPoint: .topLeading,
                        endPoint: .bottomTrailing)
         .edgesIgnoringSafeArea(.all)
