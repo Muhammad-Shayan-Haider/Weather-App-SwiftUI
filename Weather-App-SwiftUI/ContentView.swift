@@ -43,7 +43,7 @@ struct ContentView: View {
                 Button {
                     isNight.toggle()
                 } label: {
-                    WeatherButton(title: "Change Day Time", textColor: .blue, backgroundColor: .white)
+                    WeatherButton(title: "Change Day Time", textColor: .white, backgroundColor: .mint)
                 }
                 Spacer()
             }
@@ -82,11 +82,8 @@ struct BackgroundView: View {
     var isNight: Bool
     
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [isNight ? .black: .blue,
-                                        isNight ? .gray: .lightBlue]), // everything in SwiftUI is a view.
-                       startPoint: .topLeading,
-                       endPoint: .bottomTrailing)
-        .ignoresSafeArea()
+        ContainerRelativeShape().fill(isNight ? Color.black.gradient: Color.blue.gradient) // everything in SwiftUI is a view.
+            .ignoresSafeArea()
     }
 }
 
