@@ -16,7 +16,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            BackgroundView(isNight: $isNight) // @Binding variable
+            BackgroundView(isNight: isNight) // @Binding variable
             VStack(spacing: 8) {
                 CityTextView(cityName: "Cupertino, CA")
                 MainWeatherStatusView(imageName: isNight ? "moon.stars.fill":  "cloud.sun.fill",
@@ -78,16 +78,15 @@ struct WeatherDayView: View {
 }
 
 struct BackgroundView: View {
-    // @Binding always binds to a @State variable.
-    // Means that its value will always be same as the @State variable.
-    @Binding var isNight: Bool
+    // Binding is used when we are changing the value in the view.
+    var isNight: Bool
     
     var body: some View {
         LinearGradient(gradient: Gradient(colors: [isNight ? .black: .blue,
                                         isNight ? .gray: .lightBlue]), // everything in SwiftUI is a view.
                        startPoint: .topLeading,
                        endPoint: .bottomTrailing)
-        .edgesIgnoringSafeArea(.all)
+        .ignoresSafeArea()
     }
 }
 
@@ -109,8 +108,9 @@ struct MainWeatherStatusView: View {
     var body: some View {
         VStack {
             Image(systemName: imageName)
-                .renderingMode(.original)
+                .symbolRenderingMode(.palette)
                 .resizable()
+                .foregroundStyle(.gray, .orange, .green)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 180, height: 180)
             Text("\(temperature)°")
