@@ -7,6 +7,39 @@
 
 import SwiftUI
 
+/* SwiftUI is declarative. UIKit is imperative.
+ In imperative programming, you tell UI to update based on logic.
+ In declarative programming, we give UI the rules to update upfront.
+ UI knows ahead of time the states it can be in.
+ */
+
+/*
+ SwiftUI View Trees:
+ In SwiftUI views are structs, lightweight and performant.
+ Views conform to the protocol View.
+ Base view is the root of the view tree.
+ SwiftUI is efficient (tree diffing algo), because it knows all the
+ possibilities view tree can take. So, when the data is updated,
+ SwiftUI quickly updates the UI.
+ */
+
+/*
+ @ViewBuilders:
+ All the elements that return a view are view builders.
+ @ViewBuilder is the closure which returns Content which
+ conforms to View. We can conditionally show views.
+ */
+
+/*
+ Modifiers:
+ Everytime you add a modifier to a view, you are
+ wrapping the view with a new view (modifier), and therefore
+ order of the modifier matters. For example, adding a frame
+ to the view. If we add a modifier to a parent or container view,
+ it will apply to the contained views too (if the modifiers
+ applies to both container and contained views).
+ */
+
 struct ContentView: View {
     // In SwiftUI, we don't update the UI directly.
     // We use some source of truth data to update the UI.
